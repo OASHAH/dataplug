@@ -779,11 +779,14 @@ class App extends CI_Controller {
         session_to_page($session_data, $data);
         $department_id = $session_data['login_department_id'];
         if ($this->input->post()) {
-            $this->form_validation->set_rules('user_name', 'User', 'trim|required|xss_clean');
+            $this->form_validation->set_rules(
+                'user_name', 'User', 'trim|required|xss_clean');
             if($this->input->post('login_user') == '')
-                $this->form_validation->set_rules('imei_no', 'IMEI NO', 'trim|required|xss_clean');
+                $this->form_validation->set_rules(
+                    'imei_no', 'IMEI NO', 'trim|required|xss_clean');
             else
-                $this->form_validation->set_rules('login_user', 'User Name', 'trim|required|callback_appuser_login_name_already_exist');
+                $this->form_validation->set_rules(
+                    'login_user', 'User Name', 'trim|required|callback_appuser_login_name_already_exist');
             //$this->form_validation->set_rules('mobile_number', 'Mobile NO', 'trim|required|xss_clean');
             //$this->form_validation->set_rules('town', 'Town  Name', 'trim|required|min_length[1]|xss_clean');
             if ($this->form_validation->run() == FALSE) {
@@ -817,7 +820,11 @@ class App extends CI_Controller {
                 
 
                 //array parameters : action, description, before, after, app_id, app_name, form_id, form_name
-                $logary = array('action' => 'update', 'description' => 'Edit application user', 'after' => json_encode($data), 'before' => json_encode($user_rec));
+                $logary = array(
+                    'action' => 'update', 'description' =>
+                     'Edit application user', 'after' =>
+                      json_encode($data), 'before' =>
+                       json_encode($user_rec));
                 addlog($logary);
                 $this->session->set_flashdata('validate', array('message' => 'Application User Updated Successfully.', 'type' => 'success'));
                 redirect(base_url() . 'applicatioin-users');
