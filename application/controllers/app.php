@@ -826,7 +826,10 @@ class App extends CI_Controller {
                       json_encode($data), 'before' =>
                        json_encode($user_rec));
                 addlog($logary);
-                $this->session->set_flashdata('validate', array('message' => 'Application User Updated Successfully.', 'type' => 'success'));
+                $this->session->set_flashdata(
+                    'validate', array(
+                        'message' =>
+                         'Application User Updated Successfully.', 'type' => 'success'));
                 redirect(base_url() . 'applicatioin-users');
             }
         }
@@ -854,7 +857,11 @@ class App extends CI_Controller {
     public function appusersview() {
 
         if (!$this->acl->hasPermission('users', 'add')) {
-            $this->session->set_flashdata('validate', array('message' => "You don't have enough permissions to do this task.", 'type' => 'warning'));
+            $this->session->set_flashdata(
+                'validate', array(
+                    'message' =>
+                     "You don't have enough permissions to do this task.",
+                      'type' => 'warning'));
             redirect('/');
         }
         $this->load->library('form_validation');
@@ -872,10 +879,17 @@ class App extends CI_Controller {
 
             $app_id = $this->input->post('app_id');
             if ($this->acl->hasSuperAdmin()) {
-                $this->form_validation->set_rules('department_id', 'Department', 'trim|required|xss_clean');
+                $this->form_validation->set_rules(
+                    'department_id',
+                     'Department',
+                      'trim|required|xss_clean');
             }
-            $this->form_validation->set_rules('app_id', 'App Id', 'trim|required|xss_clean');
-            $this->form_validation->set_rules('name', 'First Name', 'trim|required|min_length[1]|xss_clean');
+            $this->form_validation->set_rules(
+                'app_id', 'App Id',
+                 'trim|required|xss_clean');
+            $this->form_validation->set_rules(
+                'name', 'First Name',
+                 'trim|required|min_length[1]|xss_clean');
 
             if ($this->form_validation->run() == FALSE) {
                 $batch = array($this->input->post('department_id'));
@@ -889,7 +903,11 @@ class App extends CI_Controller {
                 );
 
                 $this->db->insert('app_users_view', $appviewdata);
-                $this->session->set_flashdata('validate', array('message' => 'User view added successfully', 'type' => 'success'));
+                $this->session->set_flashdata(
+                    'validate', array(
+                        'message' =>
+                         'User view added successfully',
+                          'type' => 'success'));
                 redirect(base_url() . 'app/appusersview');
             }
         }
@@ -921,7 +939,9 @@ class App extends CI_Controller {
      */
     function appuser_imei_already_exist($imei_no, $app_id) {
         if ($this->app_model->appuser_imei_already_exist($imei_no, $app_id)) {
-            $this->form_validation->set_message('appuser_imei_already_exist', 'The %s already registered for this app.');
+            $this->form_validation->set_message(
+                'appuser_imei_already_exist',
+                 'The %s already registered for this app.');
             return false;
         } else {
             return true;
@@ -935,7 +955,9 @@ class App extends CI_Controller {
      */
     function appuser_login_name_already_exist($login_user, $app_id) {
         if ($this->app_model->appuser_login_name_already_exist($login_user, $app_id)) {
-            $this->form_validation->set_message('appuser_login_name_already_exist', 'The %s not available.');
+            $this->form_validation->set_message(
+                'appuser_login_name_already_exist',
+                 'The %s not available.');
             return false;
         } else {
             return true;
@@ -954,7 +976,11 @@ class App extends CI_Controller {
             $session_data = $this->session->userdata('logged_in');
 
             if (!$this->acl->hasPermission('app', 'add')) {
-                $this->session->set_flashdata('validate', array('message' => "You don't have enough permissions to do this task.", 'type' => 'warning'));
+                $this->session->set_flashdata(
+                    'validate', array(
+                        'message' =>
+                         "You don't have enough permissions to do this task.",
+                          'type' => 'warning'));
                 redirect(base_url() . '');
             }
 
@@ -980,7 +1006,9 @@ class App extends CI_Controller {
                             'name' => $this->input->post('department_name')
                         );
                     } else {
-                        $this->form_validation->set_rules('app_name', 'App', 'trim|required|xss_clean|callback_app_already_exist[' . $department_id . ']');
+                        $this->form_validation->set_rules(
+                            'app_name', 'App',
+                             'trim|required|xss_clean|callback_app_already_exist[' . $department_id . ']');
                     }
                     $required_if = $this->input->post('department_id') == 'new' ? '|required' : '';
                     $this->form_validation->set_rules('department_name', 'Department Name', 'trim' . $required_if . '|min_length[4]|xss_clean|callback_department_name_exists');
