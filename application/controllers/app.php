@@ -1011,14 +1011,21 @@ class App extends CI_Controller {
                              'trim|required|xss_clean|callback_app_already_exist[' . $department_id . ']');
                     }
                     $required_if = $this->input->post('department_id') == 'new' ? '|required' : '';
-                    $this->form_validation->set_rules('department_name', 'Department Name', 'trim' . $required_if . '|min_length[4]|xss_clean|callback_department_name_exists');
-                    $this->form_validation->set_rules('department_id', 'Department', 'trim|required|xss_clean');
+                    $this->form_validation->set_rules('department_name',
+                     'Department Name',
+                      'trim' . $required_if .
+                       '|min_length[4]|xss_clean|callback_department_name_exists');
+                    $this->form_validation->set_rules(
+                        'department_id', 'Department', 'trim|required|xss_clean');
                 } else {
-                    $this->form_validation->set_rules('app_name', 'App', 'trim|required|xss_clean|callback_app_already_exist[' . $department_id . ']');
+                    $this->form_validation->set_rules(
+                        'app_name', 'App',
+                         'trim|required|xss_clean|callback_app_already_exist[' . $department_id . ']');
                 }
 
                 if ($this->form_validation->run() == FALSE) {
-                    $this->session->set_flashdata('validate', array('message' => 'Please enter the Required Fields', 'type' => 'error'));
+                    $this->session->set_flashdata('validate',
+                     array('message' => 'Please enter the Required Fields', 'type' => 'error'));
                     redirect(base_url());
                 } else {
                     $new = false;
@@ -1045,12 +1052,18 @@ class App extends CI_Controller {
                     $app_id = $this->db->insert_id();
 
                     if (!$this->acl->hasSuperAdmin()) {
-                        $asign_array = array('user_id' => $session_data['login_user_id'], 'app_id' => $app_id);
+                        $asign_array = array(
+                            'user_id' =>
+                             $session_data['login_user_id'], 'app_id' => $app_id);
                         $this->db->insert('users_app', $asign_array);
                     }
 
-                    //array parameters : action, description, before, after, app_id, app_name, form_id, form_name
-                    $logary = array('action' => 'insert', 'description' => 'add new application', 'after' => json_encode($appdata), 'app_id' => $app_id, 'app_name' => $appName);
+                    //array parameters :
+                    // action, description, before, after, app_id, app_name, form_id, form_name
+                    $logary = array(
+                        'action' => 'insert', 'description' =>
+                         'add new application', 'after' =>
+                          json_encode($appdata), 'app_id' => $app_id, 'app_name' => $appName);
                     addlog($logary);
 
                     //upload app icon
@@ -1071,7 +1084,11 @@ class App extends CI_Controller {
 
                         if (!$this->upload->do_upload('userfile_addapp')) {
                             $this->data['error'] = $this->upload->display_errors();
-                            $this->session->set_flashdata('validate', array('message' => $this->upload->display_errors() . ', Default icon has been embeded with your app.', 'type' => 'warning'));
+                            $this->session->set_flashdata(
+                                'validate', array(
+                                    'message' => $this->upload->display_errors() .
+                                     ', Default icon has been embeded with your app.',
+                                      'type' => 'warning'));
                         } else {
                             //success
                             $imageData=$this->upload->data();
@@ -1108,7 +1125,11 @@ class App extends CI_Controller {
 
                     //Old app setting
                     $general_settings = array(
-                        'app_id' => $app_id,'latitude' => '31.58219141239757','longitude' => '73.7677001953125','zoom_level' => '7','map_type' => 'Pin','district_filter' => 'Off','uc_filter' => 'Off','app_language' => 'english',
+                        'app_id' => $app_id,'latitude' =>
+                         '31.58219141239757','longitude' =>
+                          '73.7677001953125','zoom_level' =>
+                           '7','map_type' => 'Pin','district_filter' =>
+                            'Off','uc_filter' => 'Off','app_language' => 'english',
                     	'setting_type'=>'GENERAL_SETTINGS',
                     	'filters'=>GENERAL_SETTINGS
                     );
